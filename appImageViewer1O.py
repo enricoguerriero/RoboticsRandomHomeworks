@@ -284,6 +284,9 @@ class MainWindow(QMainWindow):
 		a = self.qadrawlines = QAction('Lines', self)
 		a.triggered.connect(self.drawlines)
 		a.setToolTip('Draw lines in red')
+		a = self.qarotateimage = QAction('Rotate', self)
+		a.triggered.connect(self.rotate_image)
+		a.setToolTip('Rotate image')
 		# menuBar is a function in QMainWindow class, returns a QMenuBar object
 		self.mainMenu = self.menuBar()  
 		self.fileMenu = self.mainMenu.addMenu('&File')
@@ -316,6 +319,7 @@ class MainWindow(QMainWindow):
 		homeworkMenu.addAction(self.qahistogramGray)
 		homeworkMenu.addAction(self.qacorner)
 		homeworkMenu.addAction(self.qadrawlines)
+		homeworkMenu.addAction(self.qarotateimage)
 		# print( f"File {_appFileName}: (debug) last line in MainWindow.initMenu()" )
 		return
 	#end function initMenu
@@ -1027,6 +1031,14 @@ class MainWindow(QMainWindow):
 		self.np2image2pixmap(img_bgr, numpyAlso=False)
 		self.setWindowTitle(f"{self.appFileName}: Draw Lines")
 
+	def rotate_90_clockwise(matrix):
+		return [list(reversed(col)) for col in zip(*matrix)]
+
+	def rotate_image(self):
+		rotated_image = self.rotate_90_clockwise(self.npImage)
+		self.np2image2pixmap(rotated_image, numpyAlso=True)
+		self.setWindowTitle(f"{self.appFileName} : Rotated Image")
+		self.setMenuItems()
 
 		
 #end class MainWindow
